@@ -5,16 +5,14 @@ from tkinter import ttk
 from PIL import ImageTk, Image, ImageEnhance, ImageFilter
 from tkinter import filedialog
 import os
+import sys
 
-# function to display this image
-# and updating the panel widget to show this image
+
 def displayimage(img):
 	dispimage = ImageTk.PhotoImage(img)
 	panel.configure(image=dispimage)
 	panel.image = dispimage
-# function for brightness slider
-#this function adjusts the brightness of an image
-#and updates outputImage
+
 def brightness_callback(brightness_pos):
 	brightness_pos = float(brightness_pos)
 	global outputImage
@@ -23,8 +21,7 @@ def brightness_callback(brightness_pos):
 	displayimage(outputImage)
 
 
-# function for contrast slider
-# and updates the output image
+
 def contrast_callback(contrast_pos):
 	contrast_pos = float(contrast_pos)
 	global outputImage
@@ -32,8 +29,7 @@ def contrast_callback(contrast_pos):
 	outputImage = enhancer.enhance(contrast_pos)
 	displayimage(outputImage)
 
-# function for sharpness slider
-#and updates the outputImage
+
 def sharpen_callback(sharpness_pos):
 	sharpness_pos = float(sharpness_pos)
 	global outputImage
@@ -41,8 +37,7 @@ def sharpen_callback(sharpness_pos):
 	outputImage = enhancer.enhance(sharpness_pos)
 	displayimage(outputImage)
 
-# function for color slider
-# and updates the outputImage
+
 def color_callback(Color_pos):
 	Color_pos = float(Color_pos)
 	#print(Color_pos)
@@ -50,65 +45,53 @@ def color_callback(Color_pos):
 	enhancer = ImageEnhance.Color(img)
 	outputImage = enhancer.enhance(Color_pos)
 	displayimage(outputImage)
-# updates the img variable 
-#displays the image using the 'displayimage' function
+
 def rotate():
 	global img
 	img = img.rotate(90)
 	displayimage(img)
-# Function to flip the image
-#displays the image using the 'displayimage' function
+
 def flip():
 	global img
 	img = img.transpose((Image.FLIP_LEFT_RIGHT))
 	displayimage(img)
 
-# function to Blur the image 
-# This function applies a blur filter to the image
-# updates the img variable 
-#displays the image using the 'displayimage' function
+
 def blurr():
 	global img
 	img = img.filter(ImageFilter.BLUR)
 	displayimage(img)
 
-# function to emboss the image
-# this function applies a emboss filter to the image
-# updates the img variable 
-#displays the image using the 'displayimage' function
+
 def emboss():
 	global img
 	img = img.filter(ImageFilter.EMBOSS)
 	displayimage(img)
 
-# this function enhances the edges of the image using a filter
-#displays the image using the 'displayimage' function
+
 def edgeEnhance():
 	global img
 	img = img.filter(ImageFilter.FIND_EDGES)
 	displayimage(img)
 
-# function to resize the button
-#displays the image using the 'displayimage' function
+
 def resize():
 	global img
 	img = img.resize((200, 300))
 	displayimage(img)
-# updates the img variable 
-#displays the image using the 'displayimage' function
+
 def crop():
 	global img
 	img = img.crop((100, 100, 400, 400))
 	displayimage(img)
 
-# function to reset the button
-# this function closes the current tkinter window
-def reset():
-	mains.destroy()
-	os.popen("main.py")
 
-# this function allows user to change the image
-#displays the image using the 'displayimage' function
+def reset():
+    mains.destroy()  
+    python = sys.executable  # Get the Python interpreter
+    os.execv(python, [python] + sys.argv)  # Restart the script
+
+
 def ChangeImg():
 	global img
 	imgname = filedialog.askopenfilename(title="Change Image")
@@ -116,20 +99,17 @@ def ChangeImg():
 		img = Image.open(imgname)
 		img = img.resize((600, 600))
 		displayimage(img)
-# function to save the image
-# this function allows user to save the currently displayed image
-# the outputImage is then saved to the selected file.
+
 def save():
 	global img
 	savefile = filedialog.asksaveasfile(defaultextension=".jpg")
 	outputImage.save(savefile)
 	
-#this function is to close the main tkinter window.
+
 def close():
 	mains.destroy()
 
-# Creating the window for image editor
-# Calling the TK
+
 mains = Tk()
 
 # creating a string of 215 space characters
